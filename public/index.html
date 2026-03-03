@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multiplayer Games</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1 class="site-title">Multiplayer Games</h1>
+    <p class="site-tagline">Choose a game to play with friends</p>
+  </header>
+
+  <main class="game-grid">
+
+    <a class="game-card" href="/join?game=rhythm" tabindex="0">
+      <div class="game-card__icon">🥁</div>
+      <div class="game-card__body">
+        <h2 class="game-card__name">Rhythm Tap</h2>
+        <p class="game-card__desc">Tap the beat in sync with the music. Compete for the highest accuracy score!</p>
+        <span class="game-card__meta">2–4 players · 60-second rounds</span>
+      </div>
+      <span class="game-card__play">Play ▶</span>
+    </a>
+
+    <a class="game-card" href="/join?game=boggle" tabindex="0">
+      <div class="game-card__icon">🔤</div>
+      <div class="game-card__body">
+        <h2 class="game-card__name">Boggle</h2>
+        <p class="game-card__desc">Find as many words as possible on a 4×4 letter grid. Unique words score! Smart TV ready.</p>
+        <span class="game-card__meta">2–4 players · 60-second rounds · SmartTV</span>
+      </div>
+      <span class="game-card__play">Play ▶</span>
+    </a>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>Multiplayer Games &mdash; play with friends on any screen</p>
+  </footer>
+
+  <script>
+    // Keyboard navigation for TV remote D-pad
+    const cards = Array.from(document.querySelectorAll('.game-card'));
+    let focused = 0;
+    cards[0]?.focus();
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        focused = (focused + 1) % cards.length;
+        cards[focused].focus();
+      }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        focused = (focused - 1 + cards.length) % cards.length;
+        cards[focused].focus();
+      }
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        cards[focused]?.click();
+      }
+    });
+  </script>
+</body>
+</html>

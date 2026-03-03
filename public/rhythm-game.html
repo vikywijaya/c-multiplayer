@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rhythm Tap – Multiplayer</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="game-page rhythm-page">
+
+  <!-- ── Header ── -->
+  <header class="game-header">
+    <a class="back-link" href="/">← Games</a>
+    <h1 class="game-header__title">Rhythm Tap</h1>
+    <div class="conn-status" id="connStatus" aria-live="polite">Connecting…</div>
+  </header>
+
+  <!-- ── Main game area ── -->
+  <main class="rhythm-main" id="gameMain">
+
+    <!-- Player score chips -->
+    <div class="score-chips" id="scoreChips" aria-live="polite"></div>
+
+    <!-- Beat track -->
+    <section class="rhythm-track-wrap" aria-label="Beat track">
+      <div class="rhythm-hit-line" aria-hidden="true"></div>
+      <canvas id="trackCanvas" class="rhythm-canvas" aria-hidden="true"></canvas>
+      <div class="rhythm-feedback" id="tapFeedback" aria-live="assertive"></div>
+    </section>
+
+    <!-- Tap button -->
+    <section class="tap-section">
+      <div class="rhythm-timer" id="timerDisplay">
+        <span id="timerValue">60</span>s
+      </div>
+      <button id="tapBtn" class="tap-btn" aria-label="Tap button – press to hit the beat">
+        TAP
+      </button>
+      <p class="tap-hint">Press <kbd>Enter</kbd>, <kbd>Space</kbd> or any key</p>
+    </section>
+
+  </main>
+
+  <!-- ── Waiting overlay ── -->
+  <div class="overlay" id="waitOverlay">
+    <div class="overlay-card">
+      <div class="spinner"></div>
+      <p id="waitMsg">Waiting for players…</p>
+      <div class="player-list" id="waitPlayerList"></div>
+    </div>
+  </div>
+
+  <!-- ── Countdown overlay ── -->
+  <div class="overlay overlay--countdown" id="countdownOverlay" hidden>
+    <div class="overlay-card overlay-card--big">
+      <p class="countdown-label">Get Ready!</p>
+      <div class="countdown-number" id="countdownNum">3</div>
+    </div>
+  </div>
+
+  <!-- ── Results overlay ── -->
+  <div class="overlay" id="resultsOverlay" hidden>
+    <div class="overlay-card">
+      <h2 class="overlay-title">Round Over!</h2>
+      <div id="resultsBody" class="results-list"></div>
+      <div class="overlay-actions">
+        <a href="/" class="btn btn-secondary">Home</a>
+        <button id="playAgainBtn" class="btn btn-primary">Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Reconnect overlay ── -->
+  <div class="overlay" id="reconnectOverlay" hidden>
+    <div class="overlay-card">
+      <div class="spinner"></div>
+      <p>Connection lost. Reconnecting…</p>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/rhythm-game.js"></script>
+</body>
+</html>

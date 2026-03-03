@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lobby – Multiplayer Games</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="back-link" href="/">← All Games</a>
+    <h1 class="site-title" id="lobbyTitle">Game Lobby</h1>
+    <p class="site-tagline">Multiplayer</p>
+  </header>
+
+  <main class="lobby-wrap">
+    <div class="lobby-card" id="joinCard">
+      <h2 class="lobby-card__title">Enter your name</h2>
+      <input
+        id="nameInput"
+        class="lobby-input"
+        type="text"
+        maxlength="30"
+        placeholder="Your name"
+        autocomplete="off"
+        aria-label="Player name"
+      />
+      <button id="createBtn" class="btn btn-primary">Create Game</button>
+      <p id="statusMsg" class="status-msg" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="lobby-card lobby-share" id="shareCard" hidden>
+      <h2 class="lobby-card__title">Share this QR code</h2>
+      <p class="lobby-share__hint">Others scan to join your game</p>
+      <div id="qrCode" class="qr-container"></div>
+      <p class="lobby-join-link" id="joinLink"></p>
+
+      <div class="player-list" id="playerList" aria-live="polite"></div>
+
+      <button id="startBtn" class="btn btn-success" hidden>Start Game</button>
+      <p id="waitMsg" class="status-msg" role="status" aria-live="polite">Waiting for players…</p>
+    </div>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+          integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSe1jTD3iu5A8Q95s7MQS+7VJVA4t2U8VzFQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/js/lobby.js"></script>
+</body>
+</html>

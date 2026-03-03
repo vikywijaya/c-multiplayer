@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boggle – SmartTV Multiplayer</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="game-page boggle-page tv-mode">
+
+  <!-- ── Header ── -->
+  <header class="game-header">
+    <a class="back-link" href="/">← Games</a>
+    <h1 class="game-header__title">Boggle</h1>
+    <div class="conn-status" id="connStatus" aria-live="polite">Connecting…</div>
+  </header>
+
+  <!-- ── Main game area ── -->
+  <main class="boggle-main" id="gameMain">
+
+    <!-- Sidebar: timer + players + found words -->
+    <aside class="boggle-sidebar">
+      <div class="boggle-timer" id="timerDisplay">
+        <span class="boggle-timer__label">Time</span>
+        <span class="boggle-timer__value" id="timerValue">60</span>
+      </div>
+
+      <div class="score-chips" id="scoreChips" aria-live="polite"></div>
+
+      <div class="boggle-word-entry">
+        <div class="boggle-current-word" id="currentWord" aria-live="polite" aria-label="Current selected letters"></div>
+        <div class="boggle-word-btns">
+          <button id="submitWordBtn" class="btn btn-success boggle-action-btn" aria-label="Submit word">Submit</button>
+          <button id="clearWordBtn"  class="btn btn-secondary boggle-action-btn" aria-label="Clear selection">Clear</button>
+        </div>
+        <div class="boggle-feedback" id="wordFeedback" role="status" aria-live="assertive"></div>
+      </div>
+
+      <div class="boggle-found-words" id="foundWordsList" aria-live="polite" aria-label="Found words"></div>
+    </aside>
+
+    <!-- 4×4 letter board -->
+    <section class="boggle-board-wrap" aria-label="Boggle board">
+      <div class="boggle-board" id="boggleBoard" role="grid" aria-label="Letter grid">
+        <!-- Tiles injected by JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- SmartTV D-pad hint bar -->
+  <div class="tv-hint-bar" aria-hidden="true">
+    <span>⬆⬇⬅➡ Navigate</span>
+    <span>OK / Enter – Select letter</span>
+    <span>Backspace / Back – Undo</span>
+    <span>Tab → Submit / Clear</span>
+  </div>
+
+  <!-- ── Waiting overlay ── -->
+  <div class="overlay" id="waitOverlay">
+    <div class="overlay-card">
+      <div class="spinner"></div>
+      <p id="waitMsg">Waiting for players…</p>
+      <div class="player-list" id="waitPlayerList"></div>
+    </div>
+  </div>
+
+  <!-- ── Results overlay ── -->
+  <div class="overlay" id="resultsOverlay" hidden>
+    <div class="overlay-card">
+      <h2 class="overlay-title">Round Over!</h2>
+      <div id="resultsBody" class="results-list"></div>
+      <div class="overlay-actions">
+        <a href="/" class="btn btn-secondary">Home</a>
+        <button id="playAgainBtn" class="btn btn-primary">Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Reconnect overlay ── -->
+  <div class="overlay" id="reconnectOverlay" hidden>
+    <div class="overlay-card">
+      <div class="spinner"></div>
+      <p>Connection lost. Reconnecting…</p>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/boggle-game.js"></script>
+</body>
+</html>
