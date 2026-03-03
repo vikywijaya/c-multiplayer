@@ -1,6 +1,7 @@
 'use strict';
 require('dotenv').config();
 
+const path = require('path');
 const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
@@ -19,9 +20,8 @@ const io = new Server(httpServer, {
   transports: ['websocket', 'polling']
 });
 
-// ── Redis adapter (required for Vercel / multi-instance deployments) ─────────
-// Set UPSTASH_REDIS_URL in your environment to enable.
-// Without it the server runs with in-memory state (fine for single-instance).
+// Redis adapter — required for Vercel (multiple instances share room state).
+// Set UPSTASH_REDIS_URL in Vercel environment variables to enable.
 if (process.env.UPSTASH_REDIS_URL) {
   const { createAdapter } = require('@socket.io/redis-adapter');
   const Redis = require('ioredis');
@@ -37,10 +37,10 @@ const limiter = rateLimit({
 });
 
 app.use(limiter);
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/join', (req, res) => {
-  res.sendFile('lobby.html', { root: 'public' });
+  res.sendFile(path.join(__dirname, 'public', 'lobby.html'));
 });
 
 app.get('/health', (req, res) => {
@@ -53,9 +53,14 @@ app.get('/health', (req, res) => {
 
 setupSocketEvents(io);
 
-const PORT = process.env.PORT || 3000;
-httpServer.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// On Vercel, the platform manages the HTTP server — do NOT call listen().
+// Locally (and on Railway/Fly.io/Render), start the server normally.
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 3000;
+  httpServer.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
 
-module.exports = { app, httpServer, io };
+// Export the HTTP server so Vercel (and tests) can use it as the handler.
+module.exports = httpServer;
