@@ -17,7 +17,10 @@ const io = new Server(httpServer, {
     origin: corsOrigin,
     methods: ['GET', 'POST']
   },
-  transports: ['websocket', 'polling']
+  transports: ['websocket', 'polling'],
+  // Keep heartbeat well inside Vercel's 10 s serverless timeout
+  pingTimeout: 8000,
+  pingInterval: 10000
 });
 
 // Redis adapter — required for Vercel (multiple instances share room state).
@@ -30,6 +33,11 @@ if (process.env.UPSTASH_REDIS_URL) {
   io.adapter(createAdapter(pubClient, subClient));
   console.log('Socket.IO using Redis adapter (Upstash)');
 }
+
+// Trust Vercel's (and other reverse-proxy) X-Forwarded-For header so that
+// req.ip is the real client IP, not the proxy IP.  Without this every user
+// looks identical to express-rate-limit and they all share one bucket.
+app.set('trust proxy', 1);
 
 const limiter = rateLimit({
   windowMs: 60 * 1000,

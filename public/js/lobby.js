@@ -29,7 +29,7 @@ const waitMsg       = document.getElementById('waitMsg');
 lobbyTitle.textContent = meta.label + ' Lobby';
 
 // ─── Socket ────────────────────────────────────────────────────────────────
-const socket = io({ transports: ['websocket', 'polling'] });
+const socket = io({ transports: ['polling', 'websocket'] });
 
 let myRoomId   = null;
 let myColor    = null;
@@ -102,7 +102,12 @@ if (INVITE_ROOM) {
 
 // ─── Socket events ─────────────────────────────────────────────────────────
 socket.on('connect', () => {
-  document.getElementById('connStatus')?.setAttribute && null; // optional
+  setStatus('');
+});
+
+socket.on('connect_error', (err) => {
+  setStatus('Connection failed — please refresh and try again.', true);
+  createBtn.disabled = false;
 });
 
 socket.on('joined', ({ roomId, color, seat, name, isReconnect, state }) => {

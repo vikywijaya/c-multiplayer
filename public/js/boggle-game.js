@@ -41,7 +41,7 @@ let timerInterval  = null;
 let focusedIndex   = 0;        // 0-15: current focused tile; 16: Submit; 17: Clear
 
 // ─── Socket ────────────────────────────────────────────────────────────────
-const socket = io({ transports: ['websocket', 'polling'] });
+const socket = io({ transports: ['polling', 'websocket'] });
 
 socket.on('connect', () => {
   connStatus.textContent = 'Connected';

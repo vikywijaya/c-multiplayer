@@ -50,7 +50,7 @@ const TRACK_SPEED_PPS = 300; // pixels per second for note movement
 const HIT_ZONE_X = 80;       // pixels from left edge
 
 // ─── Socket ────────────────────────────────────────────────────────────────
-const socket = io({ transports: ['websocket', 'polling'] });
+const socket = io({ transports: ['polling', 'websocket'] });
 
 socket.on('connect', () => {
   connStatus.textContent = 'Connected';
