@@ -19,6 +19,18 @@ const io = new Server(httpServer, {
   transports: ['websocket', 'polling']
 });
 
+// ── Redis adapter (required for Vercel / multi-instance deployments) ─────────
+// Set UPSTASH_REDIS_URL in your environment to enable.
+// Without it the server runs with in-memory state (fine for single-instance).
+if (process.env.UPSTASH_REDIS_URL) {
+  const { createAdapter } = require('@socket.io/redis-adapter');
+  const Redis = require('ioredis');
+  const pubClient = new Redis(process.env.UPSTASH_REDIS_URL, { tls: { rejectUnauthorized: false } });
+  const subClient = pubClient.duplicate();
+  io.adapter(createAdapter(pubClient, subClient));
+  console.log('Socket.IO using Redis adapter (Upstash)');
+}
+
 const limiter = rateLimit({
   windowMs: 60 * 1000,
   max: 200
@@ -46,4 +58,4 @@ httpServer.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-module.exports = { io };
+module.exports = { app, httpServer, io };
